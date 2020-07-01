@@ -21,6 +21,15 @@ sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
+// Deobf jar allows people to drop this in mod folder on a dev environment
+task deobfJar(type: Jar, dependsOn: 'jar') {
+    from sourceSets.main.output
+    classifier "deobf"
+}
+
+artifacts {
+    archives deobfJar // Default jars are already in there.
+}
 
 minecraft {
     version = "1.12.2-14.23.5.2838"
@@ -43,11 +52,11 @@ repositories {
         name = "Hwyla maven"
         url "http://tehnut.info/maven"
     }
-	maven { // TOP
+    maven { // TOP
         name 'tterrag maven'
         url "https://maven.tterrag.com/"
     }
-	maven {
+    maven {
         name = "CoFH Maven"
         url = "https://maven.covers1624.net/"
     }
@@ -57,19 +66,24 @@ repositories {
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
-		name = "ic2"
-		url = "http://maven.ic2.player.to/"
-	}
+      name = "ic2"
+      url = "http://maven.ic2.player.to/"
+    }
     maven {
-		url "https://minecraft.curseforge.com/api/maven"
-	}
+      url "https://minecraft.curseforge.com/api/maven"
+    }
+    maven { // ModMaven, there is a bunch of stuff on there
+      name 'ModMaven'
+      url "http://modmaven.k-4u.nl/"
+    }
+  
 }
 
 dependencies {
     deobfProvided "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.11.505"
     deobfProvided "mezz.jei:jei_1.12.2:4.15.0.291"
-	compileOnly "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
-	deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.12-6"
+    compileOnly "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
+    deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.12-6"
     compileOnly "gregtechce:gregtech:1.12.2:1.8.5.436"
     compileOnly 'net.industrial-craft:industrialcraft-2:2.8.170-ex112:api'
     compile fileTree(include: ["*.jar"], dir: "libs")
